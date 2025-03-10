@@ -1,4 +1,4 @@
-public interface AbstractFactory {
+public interface AbstractFactory { 
 public Bicycle createBicycle();
-public Race createRace();
+public Race createRace(int racers);
 }
