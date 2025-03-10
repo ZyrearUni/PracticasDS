@@ -1,6 +1,10 @@
-import filter
+from filter import Filter
 
 class FilterList:
     def __init__(self):
-        pass
+        # It's created by the filter manager
+        filterList = []
+        
+    def addFilter(filter)
+        filterList.append(filter)
         
