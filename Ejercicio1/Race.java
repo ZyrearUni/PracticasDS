@@ -6,4 +6,8 @@ public abstract class Race extends Thread {
         this.retired = retired;
         this.racers = racers;
     }
+
+    public void startRace() {
+        //TODO
+    }
 }
