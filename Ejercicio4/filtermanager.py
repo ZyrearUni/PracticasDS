@@ -3,7 +3,7 @@ from filter import Filter
 
 class FilterManager:
     def __init__(self):
-        filterChain = FilterList()
+        self.filterChain = FilterList()
 
-    def addFilter(filter)
-        filterChain.addFilter(filter)
+    def addFilter(filter):
+        self.filterChain.addFilter(filter)
