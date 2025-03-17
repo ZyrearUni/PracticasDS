@@ -1,0 +1,27 @@
+Australia’s close-knit literary community – from writers and agents through to the Australian Society of Authors – have reacted with outrage. Black Inc, the publisher of the Quarterly Essay as well as fiction and nonfiction books by many prominent writers, had asked consent from its authors to train AI models on their work and then share the revenue with those authors.
+
+Now I have a dog in this race. Actually two dogs. I have published four books with Black Inc, have a fifth coming out next month, and have a contract for a sixth by the end of the year. And I have also been an AI researcher for 40 years, training AI models with data.
+
+I signed Black Inc's deal. Yes, the publisher could have communicated its intent with more transparency and a little less urgency. With whom exactly is it trying to sign a deal? And for what? And why only give us a few days to sign? But all in all, I am sympathetic to where Black Inc finds itself.
+
+Small publishers such as Black Inc provide a valuable service to Australian literature and to our cultural heritage. No one starts a new publisher to make big money. Indeed, many small publishers are struggling to survive in a market dominated by the Big Five. For example, Penguin Random House – the world’s largest general book publisher – recently acquired one of Australia’s leading independent publishers, the Text Publishing Company.
+
+Publishing is like venture capital. Most books lose money. Publishers make a return with the occasional bestseller. Small publishers like Black Inc nurture new Australian authors. And they publish many works that are worthy but are unlikely to make a profit. I am grateful then for their support of my modest literary career, and of the esteemed company I share, authors such as Richard Flanagan, David Marr and Noel Pearson.
+
+But I am outraged.
+
+I am outraged at the tech companies like OpenAI, Google and Meta for training their AI models, such as ChatGPT, Gemini and Llama, on my copyrighted books without either my consent or offering me or Black Inc any compensation.
+
+I told Black Inc that this was happening in early 2023. They asked how I knew since the tech companies are lacking in transparency on their training data. I told them that ChatGPT could give you a good summary of Chapter 4 of my first book.
+
+The tech companies claim this is "fair use". I don’t see it this way. Last year, at the Sydney Writers' festival, I called it the greatest heist in human history. All of human culture is being ingested into these AI models for the profit of a few technology companies.
+
+To add insult to outrage, the tech companies didn’t even pay for the copy of my book or likely the tens of thousand other books they used to train their models. My book isn’t available freely online. And, as far as I can tell, they trained on an illegal copy in books3, an online dataset assembled by Russian pirates. That’s not fair.
+
+Nor is it sustainable. We’re at the Napster moment in the AI race. When we started streaming music in the early 2000s, most of it was stolen. That wasn’t going to work in the long run. Who could afford to be a musician if no one paid for music? Napster was shortly sued out of business. And streaming services such as Spotify started, which paid musicians for their labours.
+
+Streaming is still not perfect. Popular artists like Taylor Swift make a good living, but the pennies being returned to struggling musicians for their streams is arguably still inadequate.
+
+Publishing needs to go in a similar direction as streaming. And for that to happen, small publishers especially need a strong position to negotiate with the mighty tech companies. I therefore signed Black Inc’s contract. It is, in my view, the lesser of the two evils.
+
+From theguardian.com
