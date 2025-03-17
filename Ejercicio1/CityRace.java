@@ -2,16 +2,13 @@
 
 public class CityRace extends Race implements Runnable {
 
-    public CityRace(int racers) {
-        this.failRate = .20f;
-        this.racers = racers;
+    public CityRace() {
+        this.failRate = .10f;
         this.time = 60000;
     }
 
-
-    public CityRace(int racers,double failRate, int time) {
+    public CityRace(double failRate, int time) {
         this.failRate = failRate;
-        this.racers = racers;
         this.time = time;
     }
 

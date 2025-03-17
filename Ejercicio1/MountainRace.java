@@ -1,14 +1,12 @@
 public class MountainRace extends Race implements Runnable {
 
-    public MountainRace(int racers) {
+    public MountainRace() {
         this.failRate = .20f;
-        this.racers = racers;
         this.time = 60000;
     }
 
-    public MountainRace(int racers, double failRate, int time) {
+    public MountainRace(double failRate, int time) {
         this.failRate = failRate;
-        this.racers = racers;
         this.time = time;
     }
 
