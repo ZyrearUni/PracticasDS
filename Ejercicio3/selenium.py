@@ -8,13 +8,19 @@ class selenium (strategist):
         super().__init__()
 
     def algorithmInterface():
-        driver = webdriver.Chrome()
+        driver = webdriver.Firefox()
         i = 1
         quotes = []
         while i <= page_total:
-            URL = "https://quotes.toscrape.com/page/" + i + "/"
+            URL = "https://quotes.toscrape.com/page/" + str(i)
             driver.get(URL)
 
-            quotes[i-1] = driver.find_elements(By.CLASS_NAME, "quote")
+            quotes_list = driver.find_elements(By.CLASS_NAME, "quote")
+            for s in range(len(quotes_list)):
+                quotes.append(quotes_list[s].text)
+            
+            i=i+1
 
         driver.close()
+
+        # Aquí ya habría que sacar la información directamente de quotes, ya que ya tiene las frases, los autores y los tags guardados
