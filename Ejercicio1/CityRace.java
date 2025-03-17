@@ -1,9 +1,11 @@
-public class CityRace extends Race {
+
+
+public class CityRace extends Race implements Runnable {
 
     public CityRace(int racers) {
         this.failRate = .20f;
         this.racers = racers;
-        this.time = 60;
+        this.time = 60000;
     }
 
 
@@ -11,5 +13,14 @@ public class CityRace extends Race {
         this.failRate = failRate;
         this.racers = racers;
         this.time = time;
+    }
+
+    @Override public void run() {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            System.out.println("CityRace thread interrupted");
+        }
+
     }
 }
