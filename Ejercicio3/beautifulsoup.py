@@ -13,6 +13,8 @@ class beautifulSoup (strategist):
             URL = "https://quotes.toscrape.com/page/" + i + "/"
             page = requests.get(URL)
 
-            soup = beautifulSoup(page.content, "html.parser")
+            soup = beautifulSoup(page.content, "html5lib")
+
+            quotes = soup.find_all('div', attrs = {'class':'quotes'})
 
 
