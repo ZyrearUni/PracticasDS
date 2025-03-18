@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-import LLM
+from LLM import LLM
 
 
 class Decorator(LLM):
