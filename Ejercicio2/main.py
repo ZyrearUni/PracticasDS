@@ -29,6 +29,6 @@ if __name__ == '__main__':
 
     llm = BasicLLM(config['model_llm'], token=LLM_token)
     translator = TranslationDecorator(llm, config['model_translation'], token=LLM_token)
-    expander = ExpansionDecorator(llm, config['model_expansion'], token=LLM_token)
+    expander = ExpansionDecorator(translator, config['model_expansion'], token=LLM_token)
     out = expander.generate_summary(t, config['input_lang'], config['output_lang'])
     print(out)
