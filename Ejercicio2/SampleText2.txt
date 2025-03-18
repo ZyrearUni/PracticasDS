@@ -1,0 +1,8 @@
+
+New York CNN
+
+Nvidia on Tuesday revealed more details about its next artificial intelligence chip platform, Blackwell Ultra, which it says will help apps reason and act on a user’s behalf – two capabilities that would take AI beyond chatbots further into real life.
+
+Blackwell Ultra, which the company detailed at its annual GTC conference, builds on Nvidia’s existing sought-after Blackwell chip. The additional computing power in the new Ultra version should make it easier for AI models to break complicated queries down into multiple steps and consider different options – in other words, reason, the company said.
+
+Demand for AI chips has surged in the wake of OpenAI’s ChatGPT in 2022, fueling a massive surge in Nvidia share prices. Its chips fuel the data centers that power popular, power-hungry AI and cloud-powered services from companies like Microsoft, Amazon and Google.
