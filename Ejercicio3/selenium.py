@@ -7,7 +7,7 @@ class selenium (strategist):
     def __init__(self):
         super().__init__()
 
-    def algorithmInterface():
+    def scrapePage():
         driver = webdriver.Firefox()
         i = 1
         quotes = []
