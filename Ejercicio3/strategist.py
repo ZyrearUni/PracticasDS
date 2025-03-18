@@ -5,5 +5,5 @@ class strategist (ABC) :
         self.page_total = 5
 
     @abstractmethod
-    def algorithmInterface():
+    def scrapePage():
         pass

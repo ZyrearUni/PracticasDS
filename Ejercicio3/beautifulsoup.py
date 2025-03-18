@@ -7,7 +7,7 @@ class beautifulSoup (strategist):
         super().__init__()
 
     # override
-    def algorithmInterface():
+    def scrapePage():
         i = 1
         while i <= page_total:
             URL = "https://quotes.toscrape.com/page/" + i + "/"
