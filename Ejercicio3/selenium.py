@@ -3,11 +3,12 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
-class selenium (strategist):
+
+class selenium(strategist):
     def __init__(self):
         super().__init__()
 
-    def scrapePage():
+    def scrapePage(self):
         driver = webdriver.Firefox()
         i = 1
         quotes = []
@@ -18,8 +19,8 @@ class selenium (strategist):
             quotes_list = driver.find_elements(By.CLASS_NAME, "quote")
             for s in range(len(quotes_list)):
                 quotes.append(quotes_list[s].text)
-            
-            i=i+1
+
+            i += 1
 
         driver.close()
 
