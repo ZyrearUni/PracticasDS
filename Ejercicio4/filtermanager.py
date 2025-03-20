@@ -1,13 +1,13 @@
 from filterlist import FilterList
-from filter import Filter
+
 
 class FilterManager:
-    def __init__(self,target):
+    def __init__(self, target):
         self.filterChain = FilterList()
-        self.filterChain.setTarget(target)
+        self.filterChain.set_target(target)
 
-    def add_filter(self,filter):
-        self.filterChain.addFilter(filter)
+    def add_filter(self, filter):
+        self.filterChain.add_filter(filter)
 
-    def execute_on(self,credentials):
+    def execute_on(self, credentials):
         self.filterChain.execute(credentials)
