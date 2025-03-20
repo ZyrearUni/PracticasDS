@@ -1,13 +1,13 @@
-from strategist import strategist
+from Strategist import Strategist
 from bs4 import BeautifulSoup
 import requests
 
 
-class BeautifulSoupStrategy(strategist):
+class BeautifulSoupStrategy(Strategist):
     def __init__(self):
         super().__init__()
 
-    def scrapePage(self):
+    def scrape_page(self):
         quotes = []
         authors = []
         tags = []
@@ -25,7 +25,7 @@ class BeautifulSoupStrategy(strategist):
             res_quotes = soup.find_all('span', attrs={'class': 'text', 'itemprop': 'text'})
 
             for quote in res_quotes:
-                quotes.append(quote.text)
+                quotes.append(quote.text[1:-1])  # [1:-1] used to remove " "  (unicode characters)
 
             res_authors = soup.find_all('small', attrs={'class': 'author', 'itemprop': 'author'})
 
@@ -41,9 +41,14 @@ class BeautifulSoupStrategy(strategist):
                     tag_list.append(t.text)
                 tags.append(tag_list)
 
-            assert len(quotes) == len(authors) == len(tags)
-
             # Now I have in quotes, authors and tags the information I need
             # Ex. quotes[0] was written by authors[0] and its tags are tags[0]
             # (where tags is a list of lists)
-            return quotes, authors, tags
+
+            # in case of a bigger scrapping it would be safer to store data to file while scrapping, to avoid
+            # loosing data in case of error, but being a simple example we did it in main to keep the class
+            # system more structured
+
+            dictionary = self.process_into_dict(quotes, authors, tags)
+
+            return dictionary
