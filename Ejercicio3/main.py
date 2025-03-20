@@ -20,7 +20,6 @@ if __name__ == '__main__':
 
     dictionary = my_strategy.scrape_page()
 
-    print(len(dictionary.keys()))
     with open(output_filename, 'w') as file:
         # additional option needed to handle long quotes
         yaml.safe_dump(dictionary, file, default_flow_style=False, width=2**10)
