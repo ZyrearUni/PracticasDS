@@ -4,8 +4,8 @@ import requests
 
 
 class BeautifulSoupStrategy(Strategist):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, page_total):
+        super().__init__(page_total)
 
     def scrape_page(self):
         quotes = []
@@ -41,14 +41,14 @@ class BeautifulSoupStrategy(Strategist):
                     tag_list.append(t.text)
                 tags.append(tag_list)
 
-            # Now I have in quotes, authors and tags the information I need
-            # Ex. quotes[0] was written by authors[0] and its tags are tags[0]
-            # (where tags is a list of lists)
+        # Now I have in quotes, authors and tags the information I need
+        # Ex. quotes[0] was written by authors[0] and its tags are tags[0]
+        # (where tags is a list of lists)
 
-            # in case of a bigger scrapping it would be safer to store data to file while scrapping, to avoid
-            # loosing data in case of error, but being a simple example we did it in main to keep the class
-            # system more structured
+        # in case of a bigger scrapping it would be safer to store data to file while scrapping, to avoid
+        # loosing data in case of error, but being a simple example we did it in main to keep the class
+        # system more structured
 
-            dictionary = self.process_into_dict(quotes, authors, tags)
+        dictionary = self.process_into_dict(quotes, authors, tags)
 
-            return dictionary
+        return dictionary

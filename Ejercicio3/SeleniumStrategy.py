@@ -6,8 +6,8 @@ from selenium.webdriver.common.by import By
 
 
 class SeleniumStrategy(Strategist):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, page_total):
+        super().__init__(page_total)
 
     def scrape_page(self):
         driver = webdriver.Firefox()
@@ -42,9 +42,8 @@ class SeleniumStrategy(Strategist):
                 tags.append(tag_list)
 
             # click on next instead of going directly to URL as a basic measure to avoid being detected
-            # as a scrapper, although toscrape.com allows scraping and won't need it
+            # as a scrapper, although toscrape.com allows scraping and in this case we won't need it
             if i != self.page_total:
-                # although
                 next_button = driver.find_element(By.XPATH, "//nav/ul[@class='pager']//li[@class='next']/a")
                 driver.execute_script("arguments[0].scrollIntoView();", next_button)
                 next_button.click()
