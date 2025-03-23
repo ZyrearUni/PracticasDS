@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Strategist(ABC):
+class Strategy(ABC):
     def __init__(self, page_total):
         self.page_total = page_total
 

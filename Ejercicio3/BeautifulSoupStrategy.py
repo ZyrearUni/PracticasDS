@@ -1,9 +1,9 @@
-from Strategist import Strategist
+from Strategy import Strategy
 from bs4 import BeautifulSoup
 import requests
 
 
-class BeautifulSoupStrategy(Strategist):
+class BeautifulSoupStrategy(Strategy):
     def __init__(self, page_total):
         super().__init__(page_total)
 

@@ -11,6 +11,11 @@ class PasswordComplexityFilter(Filter):
                 special = True
             if l.isnumeric():
                 number = True
-        if not special or not number:
-            credentials.valid = False
-            return
+
+        if not special and number:
+            credentials.reject('The password requires at least one special character')
+        elif special and not number:
+            credentials.reject('The password requires at least one number')
+        elif not special and not number:
+            credentials.reject('The password requires at least one special character AND a number')
+

@@ -1,11 +1,11 @@
-from Strategist import Strategist
+from Strategy import Strategy
 
 from selenium import webdriver
 
 from selenium.webdriver.common.by import By
 
 
-class SeleniumStrategy(Strategist):
+class SeleniumStrategy(Strategy):
     def __init__(self, page_total):
         super().__init__(page_total)
 

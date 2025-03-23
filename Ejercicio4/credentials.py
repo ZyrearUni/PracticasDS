@@ -3,6 +3,7 @@ class Credentials:
         self.email = email
         self.password = password
         self.valid = True
+        self.rejection_reason = None
 
     def get_email(self):
         return self.email
@@ -15,3 +16,9 @@ class Credentials:
 
     def set_email(self, email):
         self.email = email
+
+    def reject(self,reason):
+        if self.rejection_reason is None:
+            self.rejection_reason = []
+        self.rejection_reason.append(reason)
+        self.valid = False

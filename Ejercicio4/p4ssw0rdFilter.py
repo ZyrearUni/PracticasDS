@@ -7,11 +7,17 @@ class P4ssw0rdFilter(Filter):
 
         letter_number_association = {'a': '4', 's': '5', 'e': '3', 'o': '0'}
         pwd = credentials.password.lower()
-        check = True
-        for i in range(8):
-            # for each letter check if its the letter in password or its number substitution
-            if not pwd[i] == 'password'[i] and not pwd[i] == letter_number_association['password'[i]]:
-                check = False
-        if check:
-            credentials.valid = False
-            return
+
+        password_len = len('password')
+        for j in range(len(pwd)-password_len+1):  # attempt once for every possible starting letter
+            check = True
+            for i in range(password_len):
+                # for each letter check if it is letter in "password" or its number substitution
+                if pwd[j+i] != 'password'[i]:
+                    # if on two lines to improve readability
+                    if 'password'[i] not in letter_number_association or pwd[j+i] != letter_number_association['password'[i]]:
+                        check = False
+                        break
+
+            if check:
+                credentials.reject('The password cannot contain password (accounting with classic number-letter substitutions)')
