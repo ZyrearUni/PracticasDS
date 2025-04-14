@@ -25,6 +25,7 @@ class StandardFilter extends Filter {
   }
 }
 
+//Recomendable añadir este filtro el último
 class NewEmailFilter extends Filter {
   static List<String> registered_emails = ["test1@gmail.com"];
 
@@ -38,6 +39,9 @@ class NewEmailFilter extends Filter {
 
     if (found) {
       credentials.rejectEmail("is already registered in the system");
+    }
+    else {
+      registered_emails.add(credentials.email);
     }
   }
 }
