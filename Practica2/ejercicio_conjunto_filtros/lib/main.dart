@@ -1,4 +1,6 @@
 import 'package:ejercicio_conjunto_filtros/FormController.dart';
+import 'package:ejercicio_conjunto_filtros/filterManager.dart';
+import 'package:ejercicio_conjunto_filtros/filters.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -156,6 +158,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 _repeatPasswordController.text);
 
                             // execute filters on formController FIXME add filters
+                            var manager = FilterManager();
+                            manager.addFilter(StandardFilter());
+                            manager.addFilter(NewEmailFilter());
+                            manager.addFilter(PasswordLengthFilter());
+                            manager.addFilter(PasswordComplexityFilter());
+                            manager.addFilter(P4ssw0rdFilter());
+                            manager.executeOn(_formController);
 
                             if (_formKey.currentState!.validate()) {
                               // Handle form submission

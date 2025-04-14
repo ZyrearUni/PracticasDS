@@ -30,6 +30,11 @@ class FormController {
     }
   }
 
+  String toString() {
+   return 'email: $email is ${emailReason==null?'valid':'not valid because of $emailReason'} \n '
+       'password: $password is ${passwordReason==null?'valid':'not valid because of $passwordReason'} \n';
+  }
+
   bool get valid => _valid;
 
   get passwordReason => _passwordReason;

@@ -7,6 +7,7 @@ abstract class Filter {
 class StandardFilter extends Filter {
   final List<String> USABLE_EMAILS = ["gmail.com", "hotmail.com"];
 
+  @override
   void execute(FormController credentials) {
     int pos = credentials.email.indexOf("@");
     if (pos == -1 || pos == 0) {
@@ -27,6 +28,7 @@ class StandardFilter extends Filter {
 class NewEmailFilter extends Filter {
   static List<String> registered_emails = ["test1@gmail.com"];
 
+  @override
   void execute(FormController credentials) {
     bool found = false;
 
@@ -42,6 +44,7 @@ class NewEmailFilter extends Filter {
 
 class PasswordLengthFilter extends Filter {
   final int MIN_LENGTH = 7;
+  @override
   void execute(FormController credentials) {
     if (credentials.password.length < MIN_LENGTH) {
       credentials.rejectPassword("is not long enough");
@@ -50,12 +53,14 @@ class PasswordLengthFilter extends Filter {
 }
 
 class P4ssw0rdFilter extends Filter {
+  @override
   void execute(FormController credentials) {
     //TODO
   }
 }
 
 class PasswordComplexityFilter extends Filter {
+  @override
   void execute(FormController credentials) {
     //TODO
   }
