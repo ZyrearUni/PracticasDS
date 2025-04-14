@@ -1,3 +1,4 @@
+import 'package:ejercicio_conjunto_filtros/FormController.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -45,11 +46,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
-  bool _obscureRepeat = true;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _repeatPasswordController = TextEditingController();
+
+  late FormController _formController;
 
   @override
   void dispose() {
@@ -94,11 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           prefixIcon: Icon(Icons.email),
                         ),
                         validator: (value) {
-                          // TODO EDIT HERE THE CODE
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
+                          return _formController.emailReason;
                         },
                       ),
                       const SizedBox(height: 16),
@@ -122,11 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         validator: (value) {
-                          //TODO add code to check password validity
-                          if (value == null || value.length < 6) {
-                            return 'Password must be at least 6 characters';
-                          }
-                          return null;
+                          return _formController.passwordReason;
                         },
                       ),
                       const SizedBox(height: 16),
@@ -134,20 +128,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       // Repeat Password Field
                       TextFormField(
                         controller: _repeatPasswordController,
-                        obscureText: _obscureRepeat,
+                        obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           labelText: 'Repeat Password',
                           prefixIcon: const Icon(Icons.lock_outline),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureRepeat ? Icons.visibility : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureRepeat = !_obscureRepeat;
-                              });
-                            },
-                          ),
                         ),
                         validator: (value) {
                           // TODO I guess we could leave this like this?
@@ -167,6 +151,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
                           onPressed: () {
+                            _formController = FormController(_emailController.text,
+                                _passwordController.text,
+                                _repeatPasswordController.text);
+
+                            // execute filters on formController FIXME add filters
+
                             if (_formKey.currentState!.validate()) {
                               // Handle form submission
                               ScaffoldMessenger.of(context).showSnackBar(
