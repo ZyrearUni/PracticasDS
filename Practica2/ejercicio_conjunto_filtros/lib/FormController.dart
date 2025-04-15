@@ -4,13 +4,12 @@
 class FormController {
   String email;
   String password;
-  String repeatPassword; // FIXME we probably won't need this here
 
   String? _emailReason;
   String? _passwordReason;
   bool _valid = true;
 
-  FormController(this.email, this.password, this.repeatPassword);
+  FormController(this.email, this.password);
 
   void rejectEmail(String reason) {
     _valid = false;

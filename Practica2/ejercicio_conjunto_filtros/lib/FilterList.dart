@@ -1,3 +1,4 @@
+import 'package:ejercicio_conjunto_filtros/Credentials.dart';
 import 'package:ejercicio_conjunto_filtros/FormController.dart';
 import 'package:ejercicio_conjunto_filtros/filters.dart';
 
@@ -9,14 +10,12 @@ class FilterList {
     filterList.add(filter);
   }
 
-  //TODO: void setTarget
-
   void execute(FormController credentials) {
     for (var filter in filterList) {
       filter.execute(credentials);
-
     }
-
-    //TODO: target logic
+    if (credentials.valid) {
+      CredentialsManager().register(credentials.email, credentials.password);
+    }
   }
 }

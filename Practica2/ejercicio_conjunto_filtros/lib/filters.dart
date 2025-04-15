@@ -1,3 +1,4 @@
+import 'package:ejercicio_conjunto_filtros/Credentials.dart';
 import 'package:ejercicio_conjunto_filtros/FormController.dart';
 
 abstract class Filter {
@@ -27,21 +28,13 @@ class StandardFilter extends Filter {
 
 //Recomendable añadir este filtro el último
 class NewEmailFilter extends Filter {
-  static List<String> registered_emails = ["test1@gmail.com"];
 
   @override
   void execute(FormController credentials) {
-    bool found = false;
-
-    for (int i = 0; i < registered_emails.length && !found; i++) {
-      found = credentials.email == registered_emails[i];
-    }
+    bool found = CredentialsManager().checkAvailability(credentials.email);
 
     if (found) {
       credentials.rejectEmail("is already registered in the system");
-    }
-    else {
-      registered_emails.add(credentials.email);
     }
   }
 }

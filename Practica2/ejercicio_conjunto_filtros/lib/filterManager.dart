@@ -1,29 +1,16 @@
+import 'package:ejercicio_conjunto_filtros/FilterList.dart';
 import 'package:ejercicio_conjunto_filtros/FormController.dart';
-
-import 'filters.dart';
-
-class FilterChain {
-  List<Filter> _filters = [];
-
-    void addFilter(Filter f) {
-    _filters.add(f);
-  }
-
-  void execute(FormController form) {
-    for (Filter f in _filters) {
-      f.execute(form);
-    }
-  }
-}
+import 'package:ejercicio_conjunto_filtros/filters.dart';
 
 class FilterManager {
-  late FilterChain filterChain = FilterChain();
+  FilterList filterChain = FilterList();
 
-  void addFilter(Filter f) {
-    filterChain.addFilter(f);
+  void addFilter(Filter filter) {
+    filterChain.addFilter(filter);
+    //TODO: target logic
   }
 
-  void executeOn(FormController form) {
-    filterChain.execute(form);
+  void executeOn(FormController credentials) {
+    filterChain.execute(credentials);
   }
 }

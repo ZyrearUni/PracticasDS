@@ -153,9 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
                           onPressed: () {
-                            _formController = FormController(_emailController.text,
-                                _passwordController.text,
-                                _repeatPasswordController.text);
+                            _formController = FormController(_emailController.text, _passwordController.text,);
 
                             // execute filters on formController FIXME add filters
                             var manager = FilterManager();
@@ -165,6 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             manager.addFilter(PasswordComplexityFilter());
                             manager.addFilter(P4ssw0rdFilter());
                             manager.executeOn(_formController);
+
 
                             if (_formKey.currentState!.validate()) {
                               // Handle form submission
