@@ -34,7 +34,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _tokenController = TextEditingController();
   final TextEditingController _promptController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
 
   String _promptResult = 'You: ';
   late Future<List<ApiResponseNLPTextGeneration?>?> futureResponse;
@@ -46,15 +45,22 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> past_prompts = [];
   List<String> past_answers = [];
 
-  late String _model;
+  String _model = 'unset';
 
   void runPrompt() {
-    Strategy strat = Strategy();
+    if (_model=='unset') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please select a model'),
+      ));
+      return;
+    }
     if (!_tokenController.text.startsWith('hf_')) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Token is invalid: must start with hf_'),
       ));
+      return;
     }
+    Strategy strat = Strategy();
 
     _promptResult += _promptController.text + '\nAI: ';
     strat.sendRequest(_promptController.text,_tokenController.text, onValueReceived, past_prompts, past_answers, _model);
@@ -69,6 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
     last_token_received = DateTime.now().millisecondsSinceEpoch;
     _buttonDisabled = true; // disable button
 
+    setState(() {
+
+    });
+
     const int millis_to_wait = 500; // set timer:
     Future.delayed(const Duration(milliseconds: millis_to_wait),() {
       // if after millis_to_wait no new reponse token was received: enable button and add to past_answers
@@ -77,15 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
         _buttonDisabled = false;
         past_answers.add( fragmented_last_response.join(''));
         past_prompts.add(lastPrompt);
-        _promptResult += '\nYou:';
+        _promptResult += '\nYou: ';
 
       }
     });
 
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    setState(() {
 
-    });
   }
 
   @override
@@ -97,7 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void setup() {
     _tokenController.text = token_file.huggingFace_token;
     setState(() {
-
     });
   }
 
@@ -109,57 +115,101 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child:SizedBox(
-          width: 400,
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('Insert the API token here'),
-            TextField(controller: _tokenController,),
-
-            SizedBox(height: 150,
-              child: Center(
-                child: DropdownMenu(label:Text('AI Model'), width:300, textAlign: TextAlign.center,
-
-                  onSelected: (value) {
-                    if (value!= null) {
-                      _model = value;
-                    }
-                  },
-                  dropdownMenuEntries: [
-                    DropdownMenuEntry(value: 'microsoft/Phi-3.5-mini-instruct', label: 'Microsoft Phi-4 Mini'),
-                    //DropdownMenuEntry(value: 'Qwen/Qwen2.5-Coder-32B-Instruct', label: 'Qwen'),
-                    DropdownMenuEntry(value: 'mistralai/Mistral-Nemo-Instruct-2407', label: 'Mistal nemo'),
-                    DropdownMenuEntry(value: 'microsoft/DialoGPT-small', label: 'microsoft/DialoGPT-small'), // ON DRUGS ?
+          children: [
+            // Input section
+            Center(
+              child: SizedBox(
+                width: 500,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'API Token',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _tokenController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Enter your HuggingFace token',
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    DropdownMenu(
+                      label: const Text('Select AI Model'),
+                      width: 400,
+                      textAlign: TextAlign.center,
+                      onSelected: (value) {
+                        if (value != null) {
+                          _model = value;
+                        }
+                      },
+                      dropdownMenuEntries: const [
+                        DropdownMenuEntry(
+                            value: 'microsoft/Phi-3.5-mini-instruct',
+                            label: 'Microsoft Phi-4 Mini'),
+                        DropdownMenuEntry(
+                            value: 'mistralai/Mistral-Nemo-Instruct-2407',
+                            label: 'Mistral Nemo'),
+                        DropdownMenuEntry(
+                            value: 'microsoft/DialoGPT-small',
+                            label: 'DialoGPT-small'),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Your Prompt',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _promptController,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Type your prompt here...',
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            const Text('Insert your prompt here'),
-            TextField(controller: _promptController,),
-            SizedBox(height: 50,),
-            SizedBox(
-              height: 200,
-            child:
-            SingleChildScrollView(
 
-                padding: EdgeInsets.all(8.0),
-                controller: _scrollController,
-              child: Text('$_promptResult',style: TextStyle(fontSize: 16)),
-            ),
+            const SizedBox(height: 32),
+
+            // Response Section
+            Expanded(
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: SizedBox(
+                      width: 800,
+                    child: Text(
+                      _promptResult,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                 ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
-        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _buttonDisabled ? {}: runPrompt(),
-        tooltip: 'Execute',
-        child: const Icon(Icons.arrow_right),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _buttonDisabled ? null : runPrompt(),
+        label: const Text('Run Prompt'),
+        icon: const Icon(Icons.send),
+      ),
     );
   }
 }
