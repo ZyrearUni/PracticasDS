@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter HuggingFace'),
+      home: const MyHomePage(title: 'Huggingface conversational chatbot'),
     );
   }
 }
@@ -42,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var last_token_received;
   List<String> fragmented_last_response = [];
   late String lastPrompt;
+  bool _showLoading = false;
 
   List<String> past_prompts = [];
   List<String> past_answers = [];
@@ -76,10 +77,14 @@ class _MyHomePageState extends State<MyHomePage> {
     Strategy strat = getStrategy(_tokenController.text,_model);
     //Strategy strat = Strategy(_tokenController.text,_model);
 
-    _promptResult += _promptController.text + '\nAI: ';
     strat.sendRequest(_promptController.text, onValueReceived, past_prompts, past_answers);
     lastPrompt = _promptController.text;
 
+    setState(() {
+      _showLoading = true;
+    });
+
+    _promptResult += _promptController.text + '\nAI: ';
   }
 
   void onValueReceived(String response) {
@@ -102,6 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
         past_answers.add( fragmented_last_response.join(''));
         past_prompts.add(lastPrompt);
         _promptResult += '\nYou: ';
+        setState(() {
+          _showLoading = false;
+        });
 
       }
     });
@@ -194,8 +202,19 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
 
-            const SizedBox(height: 32),
-
+            const SizedBox(height: 20),
+            Column(
+              children: [
+              if (_showLoading) SizedBox(
+                width: 800,
+                child: LinearProgressIndicator(
+                  backgroundColor: Colors.cyan,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.amber,),
+                  value: null,
+                ),
+              ),]
+            ),
+            const SizedBox(height: 5),
             // Response Section
             Expanded(
               child: Card(
