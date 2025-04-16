@@ -12,11 +12,8 @@ class FilterList {
 
   void execute(FormController credentials) {
     for (var filter in filterList) {
-      if (credentials.valid) {
-        filter.execute(credentials);
-      }
+      filter.execute(credentials);
     }
-
     if (credentials.valid) {
       CredentialsManager().register(credentials.email, credentials.password);
     }
