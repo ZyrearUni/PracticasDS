@@ -1,11 +1,14 @@
 import 'package:huggingface_client/huggingface_client.dart';
 
 class Strategy {
+  final String _token;
+  final String _model;
+  Strategy (this._token, this._model);
 
-  void sendRequest(String prompt,String token, var callback,
-      List<String> pastPrompts, List<String> pastAnswers, String model) async {
+  void sendRequest(String prompt, var callback,
+      List<String> pastPrompts, List<String> pastAnswers) async {
 
-    final client = HuggingFaceClient.getInferenceClient(token, HuggingFaceClient.inferenceBasePath);
+    final client = HuggingFaceClient.getInferenceClient(_token, HuggingFaceClient.inferenceBasePath);
     final apiInstance = InferenceApi(client);
 
     while (pastPrompts.length > pastAnswers.length) {
@@ -20,7 +23,7 @@ class Strategy {
     reconstructed_chat+= prompt;
 
     final params = ApiQueryChatCompletion(
-      model: model,
+      model: _model,
       stream: true,
       maxLength: 200,
       message: [
@@ -31,4 +34,16 @@ class Strategy {
     final streamresult = apiInstance.chatStreamCompletion(query: params);
     streamresult.listen((pri) => callback(pri.delta.content));
   }
+}
+
+class MistralStrategy extends Strategy {
+  MistralStrategy(String token) : super(token,'mistralai/Mistral-Nemo-Instruct-2407');
+}
+
+class DialoGPTStrategy extends Strategy {
+  DialoGPTStrategy(String token) : super(token,'microsoft/DialoGPT-small');
+}
+
+class Phi3Strategy extends Strategy {
+  Phi3Strategy(String token) : super(token, 'microsoft/Phi-3.5-mini-instruct');
 }

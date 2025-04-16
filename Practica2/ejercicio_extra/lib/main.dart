@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:huggingface_client/huggingface_client.dart';
 import 'Strategies.dart';
 import 'token.dart' as token_file;
-
+// token.dart must be a file  like String huggingFace_token = 'hf_xxxx';
+// alternatively you can comment the import and the line in setup() and put the token in the interface
 
 void main() {
   runApp(const MyApp());
@@ -60,10 +61,23 @@ class _MyHomePageState extends State<MyHomePage> {
       ));
       return;
     }
-    Strategy strat = Strategy();
+
+    Strategy getStrategy (String token, String model) {
+      if (model == 'mistralai/Mistral-Nemo-Instruct-2407')
+        return MistralStrategy(token);
+      if (model == 'microsoft/DialoGPT-small')
+        return DialoGPTStrategy(token);
+      if (model == 'microsoft/Phi-3.5-mini-instruct')
+        return Phi3Strategy(token);
+
+      throw Exception('Model name $model not found');
+    }
+
+    Strategy strat = getStrategy(_tokenController.text,_model);
+    //Strategy strat = Strategy(_tokenController.text,_model);
 
     _promptResult += _promptController.text + '\nAI: ';
-    strat.sendRequest(_promptController.text,_tokenController.text, onValueReceived, past_prompts, past_answers, _model);
+    strat.sendRequest(_promptController.text, onValueReceived, past_prompts, past_answers);
     lastPrompt = _promptController.text;
 
   }
@@ -102,6 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void setup() {
+    // comment following file to execute without token.dart file
     _tokenController.text = token_file.huggingFace_token;
     setState(() {
     });
@@ -205,10 +220,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: () => _buttonDisabled ? null : runPrompt(),
-        label: const Text('Run Prompt'),
-        icon: const Icon(Icons.send),
+        child: const Icon(Icons.send),
       ),
     );
   }
