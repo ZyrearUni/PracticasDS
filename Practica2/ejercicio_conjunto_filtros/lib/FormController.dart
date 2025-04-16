@@ -23,7 +23,7 @@ class FormController {
   void rejectPassword(String reason) {
     _valid = false;
     if (_passwordReason==null) {
-      _passwordReason = 'The email $reason';
+      _passwordReason = 'The password $reason';
     } else {
       _passwordReason = '${_passwordReason!} and $reason';
     }

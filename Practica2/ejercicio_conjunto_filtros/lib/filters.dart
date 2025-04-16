@@ -26,7 +26,7 @@ class StandardFilter extends Filter {
   }
 }
 
-//Recomendable añadir este filtro el último
+//Recomendable añadir este filtro el último de las comprobaciones de correo
 class NewEmailFilter extends Filter {
 
   @override
@@ -49,16 +49,39 @@ class PasswordLengthFilter extends Filter {
   }
 }
 
-class P4ssw0rdFilter extends Filter {
-  @override
-  void execute(FormController credentials) {
-    //TODO
-  }
-}
-
 class PasswordComplexityFilter extends Filter {
   @override
   void execute(FormController credentials) {
-    //TODO
+    String check = credentials.password;
+    bool containsCaps = check.contains(RegExp(r'[A-Z]'));
+    bool containsLower = check.contains(RegExp(r'[a-z]'));
+    bool containsNumber = check.contains(RegExp(r'[0-9]'));
+    //bool containsSpecial = check.contains(RegExp(r'[-_&@]')); (Optional)
+
+    if (!containsLower) {
+      credentials.rejectPassword("does not contain lowercase characters");
+    }
+    else if (!containsCaps) {
+      credentials.rejectPassword("does not contain uppercase characters");
+    }
+    else if (!containsNumber) {
+      credentials.rejectPassword("does not contain numbers");
+    }
   }
 }
+
+class P4ssw0rdFilter extends Filter {
+  @override
+  void execute(FormController credentials) {
+    String passwd = credentials.password.toLowerCase();
+    passwd = passwd.replaceAll("4", "a");
+    passwd = passwd.replaceAll("5", "s");
+    passwd = passwd.replaceAll("3", "e");
+    passwd = passwd.replaceAll("0", "o");
+
+    if (passwd == "password") {
+      credentials.rejectPassword("cannot be a variation of 'password'");
+    }
+  }
+}
+
