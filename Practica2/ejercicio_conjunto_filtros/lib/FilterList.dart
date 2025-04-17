@@ -15,7 +15,12 @@ class FilterList {
   void execute(FormController credentials) {
     for (var filter in filterList) {
       filter.execute(credentials);
+
+      if (!credentials.valid) {
+        break;
+      }
     }
+
     if (credentials.valid) {
       if (_credentialsManager==null)
         throw NullRejectionException(false);
