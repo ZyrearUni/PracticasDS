@@ -1,4 +1,7 @@
-import 'package:huggingface_client/huggingface_client.dart';
+import 'huggingface/api/inference_api.dart';
+import 'huggingface/api_query_nlp_chat_completion.dart';
+import 'huggingface/huggingface_client.dart';
+
 
 class Strategy {
   final String _token;
