@@ -1,12 +1,13 @@
 class CredentialsManager {
-  static final CredentialsManager _singleton = CredentialsManager._privateConstructor();
-  Map<String, String> _creds = {'test1@gmail.com':'serv_pwd12', 'ejemplo2@hotmail.com':'word_1981'};
 
-  factory CredentialsManager() {
-    return _singleton;
+  Map<String, String> _creds = {};
+
+  CredentialsManager([Map<String, String>? credentials])  {
+    if (credentials!=null) {
+      _creds = credentials;
   }
 
-  CredentialsManager._privateConstructor() {
+  //CredentialsManager () {
     /*
     // read from csv
     String s = _f.readAsStringSync();

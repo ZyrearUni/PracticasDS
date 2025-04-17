@@ -1,10 +1,12 @@
+import 'dart:js_interop';
+
 import 'package:ejercicio_conjunto_filtros/Credentials.dart';
 import 'package:ejercicio_conjunto_filtros/FormController.dart';
 import 'package:ejercicio_conjunto_filtros/filters.dart';
 
 class FilterList {
   List<Filter> filterList = [];
-  //Target attribute missing
+  CredentialsManager? _credentialsManager;
 
   void addFilter(Filter filter) {
     filterList.add(filter);
@@ -15,7 +17,13 @@ class FilterList {
       filter.execute(credentials);
     }
     if (credentials.valid) {
-      CredentialsManager().register(credentials.email, credentials.password);
+      if (_credentialsManager==null)
+        throw NullRejectionException(false);
+      _credentialsManager?.register(credentials.email, credentials.password);
     }
+  }
+
+  void setTarget(CredentialsManager credentialsManager) {
+    this._credentialsManager = credentialsManager;
   }
 }

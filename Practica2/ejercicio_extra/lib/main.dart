@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _model = 'unset';
 
   void runPrompt() {
+
     if (_model=='unset') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Please select a model'),
@@ -73,8 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
       throw Exception('Model name $model not found');
     }
-
+    // Opcion 1: utilizar el patron Estrategia
     Strategy strat = getStrategy(_tokenController.text,_model);
+
+    // Opcion 2: utilizar la clase padre directamtente
     //Strategy strat = Strategy(_tokenController.text,_model);
 
     strat.sendRequest(_promptController.text, onValueReceived, past_prompts, past_answers);

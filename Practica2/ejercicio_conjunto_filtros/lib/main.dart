@@ -1,3 +1,4 @@
+import 'package:ejercicio_conjunto_filtros/Credentials.dart';
 import 'package:ejercicio_conjunto_filtros/FormController.dart';
 import 'package:ejercicio_conjunto_filtros/filterManager.dart';
 import 'package:ejercicio_conjunto_filtros/filters.dart';
@@ -55,6 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late FormController _formController;
 
+  CredentialsManager credentialsManager = CredentialsManager({'usuario1@hotmail.com':'pwdSecReT1!', 'user213@gmail.com':'q2Zz?gu6r'});
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -96,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         decoration: const InputDecoration(
                           labelText: 'Email',
                           prefixIcon: Icon(Icons.email),
+                          errorMaxLines: 3,
                         ),
                         validator: (value) {
                           return _formController.emailReason;
@@ -109,6 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
+                          errorMaxLines: 3,
                           prefixIcon: const Icon(Icons.lock),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -136,7 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           prefixIcon: const Icon(Icons.lock_outline),
                         ),
                         validator: (value) {
-                          // TODO I guess we could leave this like this?
                           if (value != _passwordController.text) {
                             return 'Passwords do not match';
                           }
@@ -155,10 +159,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () {
                             _formController = FormController(_emailController.text, _passwordController.text,);
 
-                            // execute filters on formController FIXME add filters
+                            // execute filters on formController
                             var manager = FilterManager();
+                            manager.setTarget(credentialsManager);
                             manager.addFilter(StandardFilter());
-                            manager.addFilter(NewEmailFilter());
+                            manager.addFilter(NewEmailFilter(credentialsManager));
                             manager.addFilter(PasswordLengthFilter());
                             manager.addFilter(PasswordComplexityFilter());
                             manager.addFilter(P4ssw0rdFilter());

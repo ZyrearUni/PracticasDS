@@ -29,9 +29,12 @@ class StandardFilter extends Filter {
 //Recomendable añadir este filtro el último de las comprobaciones de correo
 class NewEmailFilter extends Filter {
 
+  CredentialsManager _credentialsManager;
+  NewEmailFilter(this._credentialsManager);
+
   @override
   void execute(FormController credentials) {
-    bool found = CredentialsManager().checkAvailability(credentials.email);
+    bool found = _credentialsManager.checkAvailability(credentials.email);
 
     if (found) {
       credentials.rejectEmail("is already registered in the system");
@@ -61,11 +64,15 @@ class PasswordComplexityFilter extends Filter {
     if (!containsLower) {
       credentials.rejectPassword("does not contain lowercase characters");
     }
-    else if (!containsCaps) {
-      credentials.rejectPassword("does not contain uppercase characters");
+    if (!containsCaps) {
+      String t = !containsLower ?
+      "uppercase characters": "does not contain uppercase characters";
+      credentials.rejectPassword(t);
     }
-    else if (!containsNumber) {
-      credentials.rejectPassword("does not contain numbers");
+    if (!containsNumber) {
+      String t = !containsLower || !containsCaps ?
+      "numbers": "does not contain numbers characters";
+      credentials.rejectPassword(t);
     }
   }
 }
@@ -79,7 +86,15 @@ class P4ssw0rdFilter extends Filter {
     passwd = passwd.replaceAll("3", "e");
     passwd = passwd.replaceAll("0", "o");
 
-    if (passwd == "password") {
+    bool contains = false;
+    int lenPwd = 'password'.length;
+    for (int i=0; i<passwd.length-lenPwd+1; i++) {
+      String word = passwd.substring(i,i+lenPwd);
+      if (word=='password') {
+        contains = true;
+      }
+    }
+    if (contains) {
       credentials.rejectPassword("cannot be a variation of 'password'");
     }
   }
