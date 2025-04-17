@@ -29,15 +29,17 @@ class StandardFilter extends Filter {
 //Recomendable añadir este filtro el último de las comprobaciones de correo
 class NewEmailFilter extends Filter {
 
-  CredentialsManager _credentialsManager;
+  final CredentialsManager _credentialsManager;
   NewEmailFilter(this._credentialsManager);
 
   @override
   void execute(FormController credentials) {
-    bool found = _credentialsManager.checkAvailability(credentials.email);
+    if (credentials.valid) {
+      bool found = _credentialsManager.checkAvailability(credentials.email);
 
-    if (found) {
-      credentials.rejectEmail("is already registered in the system");
+      if (found) {
+        credentials.rejectEmail("is already registered in the system");
+      }
     }
   }
 }
