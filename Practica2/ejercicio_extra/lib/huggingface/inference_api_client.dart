@@ -9,7 +9,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart';
+import 'package:ejercicio_grupal2/huggingface/api/http/http.dart';
 import 'package:huggingface_client/huggingface_client.dart' show ApiResponseNLPChatCompletion, ApiResponseQueryStandard;
 
 import 'package:huggingface_client/src/openapi/api.dart';

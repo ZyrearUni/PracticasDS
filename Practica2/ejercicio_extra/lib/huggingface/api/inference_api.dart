@@ -10,9 +10,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ejercicio_grupal2/huggingface/api/response_transformers.dart';
-import 'package:http/http.dart';
+
 import 'package:huggingface_client/huggingface_client.dart' show ApiResponseNLPChatCompletion, ChatStreamResponse;
 
+import 'package:ejercicio_grupal2/huggingface/api/http/http.dart';
 
 import '../api_query_nlp_chat_completion.dart';
 import '../inference_api_client.dart';
