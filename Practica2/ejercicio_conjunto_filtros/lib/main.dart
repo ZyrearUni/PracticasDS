@@ -1,6 +1,6 @@
 import 'package:ejercicio_conjunto_filtros/Credentials.dart';
 import 'package:ejercicio_conjunto_filtros/FormController.dart';
-import 'package:ejercicio_conjunto_filtros/filterManager.dart';
+import 'package:ejercicio_conjunto_filtros/FilterManager.dart';
 import 'package:ejercicio_conjunto_filtros/filters.dart';
 import 'package:flutter/material.dart';
 
