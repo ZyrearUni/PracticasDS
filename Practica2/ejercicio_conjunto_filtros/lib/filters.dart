@@ -63,18 +63,24 @@ class PasswordComplexityFilter extends Filter {
     bool containsNumber = check.contains(RegExp(r'[0-9]'));
     //bool containsSpecial = check.contains(RegExp(r'[-_&@]')); (Optional)
 
+    String rejection = "";
+
     if (!containsLower) {
-      credentials.rejectPassword("does not contain lowercase characters");
+      rejection = "does not contain lowercase characters";
     }
     if (!containsCaps) {
       String t = !containsLower ?
-      "uppercase characters": "does not contain uppercase characters";
-      credentials.rejectPassword(t);
+                " nor uppercase characters": "does not contain uppercase characters";
+      rejection = rejection + t;
     }
     if (!containsNumber) {
       String t = !containsLower || !containsCaps ?
-      "numbers": "does not contain numbers characters";
-      credentials.rejectPassword(t);
+                " nor numbers": "does not contain numbers characters";
+      rejection = rejection + t;
+    }
+
+    if (rejection.isNotEmpty) {
+      credentials.rejectPassword(rejection);
     }
   }
 }

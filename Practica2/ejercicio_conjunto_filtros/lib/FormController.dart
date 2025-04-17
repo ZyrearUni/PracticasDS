@@ -13,20 +13,12 @@ class FormController {
 
   void rejectEmail(String reason) {
     _valid = false;
-    if (_emailReason==null) {
-      _emailReason = 'The email $reason';
-    } else {
-      _emailReason = '${_emailReason!} and $reason';
-    }
+    _emailReason = 'The email $reason';
   }
 
   void rejectPassword(String reason) {
     _valid = false;
-    if (_passwordReason==null) {
-      _passwordReason = 'The password $reason';
-    } else {
-      _passwordReason = '${_passwordReason!} and $reason';
-    }
+    _passwordReason = 'The password $reason';
   }
 
   String toString() {
