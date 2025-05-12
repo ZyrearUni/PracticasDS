@@ -1,15 +1,6 @@
-abstract class Transaction {
+class Account {
+  String number = "";
+  double balance = 0.0;
 
-}
-
-class DepositTransaction extends Transaction {
-
-}
-
-class WithdrawTransaction extends Transaction {
-
-}
-
-class DepositTransaction extends Transaction {
-  String to_account = "";
+  Account(this.number);
 }
