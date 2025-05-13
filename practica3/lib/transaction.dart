@@ -4,11 +4,11 @@ abstract class Transaction {
   String id = "";
   double amount = 0.0;
 
-  Transaction(double amount) {
+  Transaction(this.id, double amount) {
     if(amount >= 0) {
       this.amount = amount;
     } else {
-      throw StateError("Cannot create a transaction with amount being leess or equal to 0");
+      throw StateError("Cannot create a transaction with amount being less or equal to 0");
     }
   }
 
@@ -16,7 +16,7 @@ abstract class Transaction {
 }
 
 class DepositTransaction extends Transaction {
-  DepositTransaction(super.amount);
+  DepositTransaction(super.id, super.amount);
 
   @override
   void apply(Account account) {
@@ -25,7 +25,7 @@ class DepositTransaction extends Transaction {
 }
 
 class WithdrawTransaction extends Transaction {
-  WithdrawTransaction(super.amount);
+  WithdrawTransaction(super.id, super.amount);
 
   @override
   void apply(Account account) {
@@ -39,7 +39,7 @@ class WithdrawTransaction extends Transaction {
 
 class TransferTransaction extends Transaction {
   Account toAccount;
-  TransferTransaction(super.amount, this.toAccount);
+  TransferTransaction(super.id, super.amount, this.toAccount);
 
   @override
   void apply(Account account) {

@@ -1,6 +1,6 @@
 class Account {
-  String number = "";
+  String owner;
   double balance = 0.0;
 
-  Account(this.number);
+  Account(this.owner);
 }
