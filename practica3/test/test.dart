@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:practica3/account.dart';
 import 'package:practica3/bankservice.dart';
 import 'package:practica3/transaction.dart';
@@ -12,13 +13,13 @@ void main() {
     });
 
     test('No se permite depositar cantidades negativas o 0', () {
-      expect(() => DepositTransaction("id", -1), throwsA(isA<StateError>));
-      expect(() => DepositTransaction("id", 0), throwsA(isA<StateError>));
+      expect(() => DepositTransaction("id", -1), throwsStateError);
+      expect(() => DepositTransaction("id", 0), throwsStateError);
     });
 
     test('No se permite retirar cantidades negativas o cero', () {
-      expect(() => WithdrawTransaction("id", -1), throwsA(isA<StateError>));
-      expect(() => WithdrawTransaction("id", 0), throwsA(isA<StateError>));
+      expect(() => WithdrawTransaction("id", -1), throwsStateError);
+      expect(() => WithdrawTransaction("id", 0), throwsStateError);
     });
   });
 
@@ -33,13 +34,13 @@ void main() {
     test('WithdrawalTransaction lanza StateError cuando hay fondos insuficientes', () {
       Account test = Account("titular");
       Transaction transTest = WithdrawTransaction("id", 10);
-      expect(() => transTest.apply(test), throwsA(isA<StateError>));
+      expect(() => transTest.apply(test), throwsStateError);
     });
 
     test('TransferTransaction mueve fondos correctamente', () {
       Account test = Account("titular");
       Transaction transTest = TransferTransaction("id", 10, Account("owner"));
-      expect(() => transTest.apply(test), throwsA(isA<StateError>));
+      expect(() => transTest.apply(test), throwsStateError);
     });
   });
 
@@ -61,7 +62,7 @@ void main() {
       BankService test = BankService();
       Account testAcc = Account("owner");
       test.accountList["test"] = testAcc;
-      expect(() => test.withdraw("test", 10), throwsA(isA<StateError>));
+      expect(() => test.withdraw("test", 10), throwsStateError);
     });
 
     test('Transfer mueve fondos correctamente', () {
@@ -73,8 +74,8 @@ void main() {
       test.accountList["test2"] = testAcc2;
 
       test.transfer("test2", "test1", 5);
-      expect(test.accountList["test1"],equals(5));
-      expect(test.accountList["test2"], equals(5));
+      expect(test.accountList["test1"]!.balance,equals(5));
+      expect(test.accountList["test2"]!.balance, equals(5));
     });
 
     test('Transfer lanza StateError cuando los fondos son insuficientes', () {
@@ -84,7 +85,7 @@ void main() {
       testAcc2.balance = 10;
       test.accountList["test1"] = testAcc1;
       test.accountList["test2"] = testAcc2;
-      expect(() => test.transfer("test2", "test1", 100), throwsA(isA<StateError>));
+      expect(() => test.transfer("test2", "test1", 100), throwsStateError);
     });
 
     test('El id de la transacción es único', () {

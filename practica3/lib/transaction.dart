@@ -5,7 +5,7 @@ abstract class Transaction {
   double amount = 0.0;
 
   Transaction(this.id, double amount) {
-    if(amount >= 0) {
+    if(amount > 0) {
       this.amount = amount;
     } else {
       throw StateError("Cannot create a transaction with amount being less or equal to 0");
