@@ -1,0 +1,18 @@
+import 'package:practica4/product.dart';
+
+class Client {
+  String name;
+  List<Product> sellableProducts = [];
+  double balance = 0;
+
+  Client(this.name, this.balance) {
+    if(balance < 0) {
+      throw StateError("Cannot have negative balance");
+    }
+  }
+
+  //TODO: operator==
+  bool operator == (Object another) =>
+     another is Client && this.name == another.name;
+
+}
