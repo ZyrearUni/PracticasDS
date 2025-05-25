@@ -50,7 +50,7 @@ class ItemPackage extends Product {
   double getPrice() {
     double result = 0;
     for (var product in children) {
-      result = product.getPrice();
+      result += product.getPrice();
     }
 
     return result;

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:practica4/product.dart';
+import 'package:practica4/client.dart';
+import 'package:practica4/marketplace_context.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,69 +57,205 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  late MarketplaceContext marketplace;
+  late List<Client> clients;
+  late Client currentClient;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  int? selectedToBuy;
+  int? selectedToSell;
+
+  @override
+  void initState() {
+    super.initState();
+    marketplace = MarketplaceContext();
+
+    clients = [
+      Client('Alice', 100),
+      Client('Bob', 50),
+      Client('Carol', 75),
+    ];
+
+    // Por defecto, usamos al primero
+    currentClient = clients.first;
+
+    // Productos de ejemplo
+    var item1 = Item('Book', clients[1], 30); // Bob vende
+    var item2 = Item('Lamp', clients[2], 45); // Carol vende
+
+    clients[1].sellableProducts.add(item1);
+    clients[2].sellableProducts.add(item2);
+    marketplace.availableProducts.addAll([item1, item2]);
+  }
+
+  void _buy() {
+    if (selectedToBuy == null) {
+      _showError("Select a product to buy");
+      return;
+    }
+
+    try {
+      var product = marketplace.availableProducts[selectedToBuy!];
+      marketplace.buyProduct(selectedToBuy!, product.owner, currentClient);
+      selectedToBuy = null;
+      setState(() {});
+    } catch (e) {
+      _showError(e.toString());
+    }
+  }
+
+  void _sell() {
+    if (selectedToSell == null || currentClient.sellableProducts.isEmpty) {
+      _showError("Select one of your products to sell");
+      return;
+    }
+
+    var product = currentClient.sellableProducts[selectedToSell!];
+    marketplace.sellProduct(product, currentClient);
+    selectedToSell = null;
+    setState(() {});
+  }
+
+  void _retire() {
+    if (selectedToBuy == null) {
+      _showError("Select your product from marketplace to retire");
+      return;
+    }
+
+    var product = marketplace.availableProducts[selectedToBuy!];
+    if (product.owner != currentClient) {
+      _showError("You can only retire your own products");
+      return;
+    }
+
+    marketplace.retireProduct(selectedToBuy!, currentClient);
+    selectedToBuy = null;
+    setState(() {});
+  }
+
+  void _showError(String message) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          )
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
+        title: Text('${widget.title} - Logged in as ${currentClient.name}'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Padding(
+        padding: const EdgeInsets.all(12),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+          children: [
+            // Selector de identidad
+            Row(
+              children: [
+                const Text('Logged in as: '),
+                const SizedBox(width: 8),
+                DropdownButton<Client>(
+                  value: currentClient,
+                  onChanged: (Client? newClient) {
+                    setState(() {
+                      currentClient = newClient!;
+                      selectedToBuy = null;
+                      selectedToSell = null;
+                    });
+                  },
+                  items: clients.map((Client client) {
+                    return DropdownMenuItem<Client>(
+                      value: client,
+                      child: Text('${client.name} (\$${client.balance})'),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: Row(
+                children: [
+                  // Productos disponibles
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Text('Marketplace', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: marketplace.availableProducts.length,
+                            itemBuilder: (context, index) {
+                              var product = marketplace.availableProducts[index];
+                              return ListTile(
+                                title: Text('${product.name} - \$${product.getPrice()}'),
+                                subtitle: Text('Seller: ${product.owner.name}'),
+                                selected: selectedToBuy == index,
+                                onTap: () {
+                                  setState(() {
+                                    selectedToBuy = index;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const VerticalDivider(),
+
+                  // Productos del usuario actual
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text('${currentClient.name}\'s Products',
+                            style: const TextStyle(fontWeight: FontWeight.bold)),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: currentClient.sellableProducts.length,
+                            itemBuilder: (context, index) {
+                              var product = currentClient.sellableProducts[index];
+                              return ListTile(
+                                title: Text('${product.name} - \$${product.getPrice()}'),
+                                selected: selectedToSell == index,
+                                onTap: () {
+                                  setState(() {
+                                    selectedToSell = index;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(onPressed: _buy, child: const Text('Buy')),
+                ElevatedButton(onPressed: _sell, child: const Text('Sell')),
+                ElevatedButton(onPressed: _retire, child: const Text('Retire')),
+              ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -11,8 +11,7 @@ class Client {
     }
   }
 
-  //TODO: operator==
-  bool operator == (Object another) =>
-     another is Client && this.name == another.name;
-
+  @override
+  bool operator == (Object other) =>
+     other is Client && name == other.name;
 }
